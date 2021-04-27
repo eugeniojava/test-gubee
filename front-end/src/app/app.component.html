@@ -1,0 +1,26 @@
+<h1>Gubee Tecnologia</h1>
+<div class="container">
+  <div class="card list-car">
+    <h5 class="card-header">Lista de produtos</h5>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Mercado-alvo</th>
+            <th scope="col">Tecnologias</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products">
+            <td>{{ product.productName }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.targetMarket }}</td>
+            <td>{{ product.stack }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
