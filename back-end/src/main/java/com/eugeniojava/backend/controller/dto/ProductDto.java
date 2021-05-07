@@ -3,10 +3,12 @@ package com.eugeniojava.backend.controller.dto;
 import com.eugeniojava.backend.model.Market;
 import com.eugeniojava.backend.model.Product;
 import com.eugeniojava.backend.model.Technology;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class ProductDto {
 
     private final String productName;
@@ -32,21 +34,5 @@ public class ProductDto {
                 .stream()
                 .map(ProductDto::new)
                 .collect(Collectors.toList());
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<String> getTargetMarket() {
-        return targetMarket;
-    }
-
-    public List<String> getStack() {
-        return stack;
     }
 }

@@ -1,8 +1,11 @@
 package com.eugeniojava.backend.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
 @Entity
 @Table(name = "product_table")
 public class Product {
@@ -31,24 +34,4 @@ public class Product {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "technology_id"))
     private List<Technology> technologies;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<Market> getMarkets() {
-        return markets;
-    }
-
-    public List<Technology> getTechnologies() {
-        return technologies;
-    }
 }

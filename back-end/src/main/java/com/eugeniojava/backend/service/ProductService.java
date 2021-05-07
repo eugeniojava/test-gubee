@@ -8,4 +8,10 @@ import java.util.List;
 public interface ProductService {
 
     ResponseEntity<List<ProductDto>> getAll();
+
+    ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
+            List<String> technologies);
+
+    ResponseEntity<List<ProductDto>> getFilteredByMarkets(
+            List<String> markets);
 }

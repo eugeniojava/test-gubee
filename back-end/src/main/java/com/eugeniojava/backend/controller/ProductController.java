@@ -3,10 +3,7 @@ package com.eugeniojava.backend.controller;
 import com.eugeniojava.backend.controller.dto.ProductDto;
 import com.eugeniojava.backend.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,17 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAll() {
         return productService.getAll();
+    }
+
+    @GetMapping("/filterByTechnology/{technologies}")
+    public ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
+            @PathVariable List<String> technologies) {
+        return productService.getFilteredByTechnologies(technologies);
+    }
+
+    @GetMapping("/filterByMarket/{markets}")
+    public ResponseEntity<List<ProductDto>> getFilteredByMarkets(
+            @PathVariable List<String> markets) {
+        return productService.getFilteredByMarkets(markets);
     }
 }

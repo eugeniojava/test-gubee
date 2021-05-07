@@ -29,4 +29,29 @@ public class ProductServiceImpl implements ProductService {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
+            List<String> technologies) {
+        List<Product> products =
+                productRepository.findByTechnologiesNameIn(technologies);
+
+        if (!products.isEmpty()) {
+            return new ResponseEntity<>(ProductDto.fromListModel(products),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getFilteredByMarkets(
+            List<String> markets) {
+        List<Product> products = productRepository.findByMarketsNameIn(markets);
+
+        if (!products.isEmpty()) {
+            return new ResponseEntity<>(ProductDto.fromListModel(products),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
