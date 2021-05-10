@@ -1,57 +1,40 @@
 package com.eugeniojava.backend.service.impl;
 
-import com.eugeniojava.backend.controller.dto.ProductDto;
 import com.eugeniojava.backend.model.Product;
 import com.eugeniojava.backend.repository.ProductRepository;
 import com.eugeniojava.backend.service.ProductService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+//TODO servico anemico
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    @Override
+    public Optional<Product> findById(long id) {
+        return productRepository.findById(id);
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getAll() {
-        List<Product> products = productRepository.findAll();
-
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(ProductDto.fromListModel(products),
-                    HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public List<Product> listAll() {
+        return productRepository.findAll();
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
+    public List<Product> getFilteredByTechnologies(
             List<String> technologies) {
-        List<Product> products =
-                productRepository.findByTechnologiesNameIn(technologies);
-
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(ProductDto.fromListModel(products),
-                    HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return productRepository.findByTechnologiesNameIn(technologies);
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getFilteredByMarkets(
+    public List<Product> getFilteredByMarkets(
             List<String> markets) {
-        List<Product> products = productRepository.findByMarketsNameIn(markets);
-
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(ProductDto.fromListModel(products),
-                    HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return productRepository.findByMarketsNameIn(markets);
     }
 }

@@ -29,10 +29,7 @@ public class ProductDto {
                 .collect(Collectors.toList());
     }
 
-    public static List<ProductDto> fromListModel(List<Product> products) {
-        return products
-                .stream()
-                .map(ProductDto::new)
-                .collect(Collectors.toList());
+    public static ProductDto fromDomain(Product product) {
+        return new ProductDto(product);
     }
 }
