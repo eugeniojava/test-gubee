@@ -1,10 +1,13 @@
 package com.eugeniojava.backend.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "market_table")
 public class Market {
