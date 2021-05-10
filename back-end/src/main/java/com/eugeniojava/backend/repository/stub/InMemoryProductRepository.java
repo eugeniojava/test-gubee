@@ -5,91 +5,74 @@ import com.eugeniojava.backend.model.Product;
 import com.eugeniojava.backend.model.Technology;
 import com.eugeniojava.backend.repository.ProductRepository;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNullElse;
+import static java.util.stream.Collectors.*;
 
 public class InMemoryProductRepository implements ProductRepository {
+    private final Map<Long, Product> inMemoryDb = new HashMap<>();
 
-    private static List<Market> getMarkets() {
-        Market market1 = new Market();
-        market1.setId(1L);
-        market1.setName("Market 1");
-
-        Market market2 = new Market();
-        market2.setId(2L);
-        market2.setName("Market 2");
-
-        Market market3 = new Market();
-        market3.setId(3L);
-        market3.setName("Market 3");
-
-        return Arrays.asList(market1, market2, market3);
+    @Override
+    public Optional<Product> findById(long id) {
+        return Optional.ofNullable(this.inMemoryDb.get(id));
     }
 
-    private static List<Technology> getTechnologies() {
-        Technology technology1 = new Technology();
-        technology1.setId(1L);
-        technology1.setName("Technology 1");
+    @Override
+    public Product save(Product product) {
+        requireNonNull(product);
+        var id = requireNonNullElse(product.getId(), nextVal());
+        inMemoryDb.put(id, product);
+        return product;
 
-        Technology technology2 = new Technology();
-        technology2.setId(2L);
-        technology2.setName("Technology 2");
-
-        Technology technology3 = new Technology();
-        technology3.setId(3L);
-        technology3.setName("Technology 3");
-
-        return Arrays.asList(technology1, technology2, technology3);
     }
 
-    private static List<Product> getProducts() {
-        Product product1 = new Product();
-        product1.setId(1L);
-        product1.setName("Product 1");
-        product1.setDescription("Description 1");
-        product1.setMarkets(getMarkets());
-        product1.setTechnologies(getTechnologies());
-
-        Product product2 = new Product();
-        product2.setId(2L);
-        product2.setName("Product 2");
-        product2.setDescription("Description 2");
-        product2.setMarkets(getMarkets());
-        product2.setTechnologies(getTechnologies());
-
-        Product product3 = new Product();
-        product3.setId(3L);
-        product3.setName("Product 3");
-        product3.setDescription("Description 3");
-        product3.setMarkets(getMarkets());
-        product3.setTechnologies(getTechnologies());
-
-        return Arrays.asList(product1, product2, product3);
+    @Override
+    public Product insert(Product product) {
+        requireNonNull(product);
+        var id = requireNonNullElse(product.getId(), nextVal());
+        if (inMemoryDb.containsKey(id))
+            throw new IllegalArgumentException("Utilize o metodo save para atualizar um item");
+        inMemoryDb.put(id, product);
+        return product;
     }
 
     @Override
     public List<Product> findAll() {
-        List<Product> products = getProducts();
-
-        products.forEach(p -> {
-            p.getMarkets().forEach(m -> {
-                m.setProducts(products);
-            });
-            p.getTechnologies().forEach(t -> {
-                t.setProducts(products);
-            });
-        });
-
-        return products;
+        return new ArrayList<>(this.inMemoryDb.values());
     }
 
     @Override
-    public List<Product> findByTechnologiesNameIn(List<String> technologies) {
-        return null;
+    public List<Product> findByTechnologiesNameIn(List<String> listOfTech) {
+        var technologies = this.inMemoryDb.values().stream()
+                .filter(p -> p.getTechnologies() != null && !p.getTechnologies().isEmpty())
+                .collect(toMap(Function.identity(),
+                        p -> p.getTechnologies().stream().map(Technology::getName).collect(toSet()))
+                );
+        return technologies.entrySet()
+                .stream()
+                .filter(p -> listOfTech.stream().anyMatch(l -> p.getValue().contains(l)))
+                .map(Map.Entry::getKey)
+                .collect(toList());
     }
 
     @Override
     public List<Product> findByMarketsNameIn(List<String> markets) {
-        return null;
+        var market = this.inMemoryDb.values().stream()
+                .filter(p -> p.getMarkets() != null && !p.getMarkets().isEmpty())
+                .collect(toMap(Function.identity(),
+                        p -> p.getMarkets().stream().map(Market::getName).collect(toSet()))
+                );
+        return market.entrySet()
+                .stream()
+                .filter(p -> markets.stream().anyMatch(l -> p.getValue().contains(l)))
+                .map(Map.Entry::getKey)
+                .collect(toList());
+    }
+
+    private long nextVal() {
+        return this.inMemoryDb.values().stream().mapToLong(Product::getId).max().orElse(1);
     }
 }

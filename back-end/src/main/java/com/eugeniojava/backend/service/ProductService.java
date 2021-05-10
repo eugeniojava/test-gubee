@@ -1,17 +1,19 @@
 package com.eugeniojava.backend.service;
 
-import com.eugeniojava.backend.controller.dto.ProductDto;
-import org.springframework.http.ResponseEntity;
+import com.eugeniojava.backend.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    ResponseEntity<List<ProductDto>> getAll();
+    Optional<Product> findById(long id);
 
-    ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
+    List<Product> listAll();
+
+    List<Product> getFilteredByTechnologies(
             List<String> technologies);
 
-    ResponseEntity<List<ProductDto>> getFilteredByMarkets(
+    List<Product> getFilteredByMarkets(
             List<String> markets);
 }
