@@ -1,6 +1,5 @@
 package com.eugeniojava.backend.model;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
