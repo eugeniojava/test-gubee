@@ -1,6 +1,7 @@
-package com.eugeniojava.backend.service;
+package com.eugeniojava.backend.controller;
 
 import com.eugeniojava.backend.model.Product;
+import com.eugeniojava.backend.service.ProductService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.verification.VerificationModeFactory;
