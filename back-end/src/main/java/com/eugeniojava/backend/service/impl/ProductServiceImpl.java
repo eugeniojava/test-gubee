@@ -27,14 +27,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getFilteredByTechnologies(
-            List<String> technologies) {
+    public List<Product> getFilteredByTechnologies(List<String> technologies) {
         return productRepository.findByTechnologiesNameIn(technologies);
     }
 
     @Override
-    public List<Product> getFilteredByMarkets(
-            List<String> markets) {
+    public List<Product> getFilteredByMarkets(List<String> markets) {
         return productRepository.findByMarketsNameIn(markets);
     }
 }

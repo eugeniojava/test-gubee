@@ -22,7 +22,8 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> findById(@PathVariable long id) {
-        return productService.findById(id).map(ProductDto::fromDomain)
+        return productService.findById(id)
+                .map(ProductDto::fromDomain)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -30,20 +31,21 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<ProductDto>> listAll() {
         var products = productService.listAll();
+
         return ResponseEntity.ok(products.stream().map(ProductDto::fromDomain).collect(toList()));
     }
 
     @GetMapping("/filterByTechnology/{technologies}")
-    public ResponseEntity<List<ProductDto>> getFilteredByTechnologies(
-            @PathVariable List<String> technologies) {
+    public ResponseEntity<List<ProductDto>> getFilteredByTechnologies(@PathVariable List<String> technologies) {
         var products = productService.getFilteredByTechnologies(technologies);
+
         return ResponseEntity.ok(products.stream().map(ProductDto::fromDomain).collect(toList()));
     }
 
     @GetMapping("/filterByMarket/{markets}")
-    public ResponseEntity<List<ProductDto>> getFilteredByMarkets(
-            @PathVariable List<String> markets) {
+    public ResponseEntity<List<ProductDto>> getFilteredByMarkets(@PathVariable List<String> markets) {
         var products = productService.getFilteredByMarkets(markets);
+
         return ResponseEntity.ok(products.stream().map(ProductDto::fromDomain).collect(toList()));
     }
 }

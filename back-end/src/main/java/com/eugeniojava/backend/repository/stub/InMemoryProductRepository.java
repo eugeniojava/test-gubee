@@ -13,6 +13,7 @@ import static java.util.Objects.requireNonNullElse;
 import static java.util.stream.Collectors.*;
 
 public class InMemoryProductRepository implements ProductRepository {
+
     private final Map<Long, Product> inMemoryDb = new HashMap<>();
 
     @Override
@@ -24,18 +25,21 @@ public class InMemoryProductRepository implements ProductRepository {
     public Product save(Product product) {
         requireNonNull(product);
         var id = requireNonNullElse(product.getId(), nextVal());
-        inMemoryDb.put(id, product);
-        return product;
 
+        inMemoryDb.put(id, product);
+
+        return product;
     }
 
     @Override
     public Product insert(Product product) {
         requireNonNull(product);
         var id = requireNonNullElse(product.getId(), nextVal());
+
         if (inMemoryDb.containsKey(id))
-            throw new IllegalArgumentException("Utilize o metodo save para atualizar um item");
+            throw new IllegalArgumentException("Use the save method to update an item.");
         inMemoryDb.put(id, product);
+
         return product;
     }
 
@@ -46,12 +50,16 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findByTechnologiesNameIn(List<String> listOfTech) {
-        var technologies = this.inMemoryDb.values().stream()
+        var technologies = this.inMemoryDb
+                .values()
+                .stream()
                 .filter(p -> p.getTechnologies() != null && !p.getTechnologies().isEmpty())
-                .collect(toMap(Function.identity(),
-                        p -> p.getTechnologies().stream().map(Technology::getName).collect(toSet()))
-                );
-        return technologies.entrySet()
+                .collect(toMap(
+                        Function.identity(),
+                        p -> p.getTechnologies().stream().map(Technology::getName).collect(toSet())));
+
+        return technologies
+                .entrySet()
                 .stream()
                 .filter(p -> listOfTech.stream().anyMatch(l -> p.getValue().contains(l)))
                 .map(Map.Entry::getKey)
@@ -60,12 +68,15 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findByMarketsNameIn(List<String> markets) {
-        var market = this.inMemoryDb.values().stream()
+        var market = this.inMemoryDb
+                .values()
+                .stream()
                 .filter(p -> p.getMarkets() != null && !p.getMarkets().isEmpty())
-                .collect(toMap(Function.identity(),
-                        p -> p.getMarkets().stream().map(Market::getName).collect(toSet()))
-                );
-        return market.entrySet()
+                .collect(toMap(
+                        Function.identity(), p -> p.getMarkets().stream().map(Market::getName).collect(toSet())));
+
+        return market
+                .entrySet()
                 .stream()
                 .filter(p -> markets.stream().anyMatch(l -> p.getValue().contains(l)))
                 .map(Map.Entry::getKey)
@@ -73,6 +84,11 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     private long nextVal() {
-        return this.inMemoryDb.values().stream().mapToLong(Product::getId).max().orElse(1);
+        return this.inMemoryDb
+                .values()
+                .stream()
+                .mapToLong(Product::getId)
+                .max()
+                .orElse(1);
     }
 }
