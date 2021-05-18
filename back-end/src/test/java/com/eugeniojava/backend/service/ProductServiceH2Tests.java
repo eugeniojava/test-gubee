@@ -5,6 +5,7 @@ import com.eugeniojava.backend.model.Product;
 import com.eugeniojava.backend.model.Technology;
 import com.eugeniojava.backend.repository.JpaProductRepository;
 import com.eugeniojava.backend.repository.MarketRepository;
+import com.eugeniojava.backend.repository.ProductRepository;
 import com.eugeniojava.backend.repository.TechnologyRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +22,7 @@ import java.util.List;
 public class ProductServiceH2Tests {
 
     @Autowired
-    private JpaProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private TechnologyRepository technologyRepository;

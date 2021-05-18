@@ -1,21 +1,44 @@
 package com.eugeniojava.backend.repository;
 
 import com.eugeniojava.backend.model.Product;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepositoryImpl {
+@Service
+@RequiredArgsConstructor
+public class ProductRepositoryImpl implements ProductRepository {
+    private final JpaProductRepository jpaProductRepository;
 
-    Optional<Product> findById(long id);
+    @Override
+    public Optional<Product> findById(long id) {
+        return this.jpaProductRepository.findById(id);
+    }
 
-    Product save(Product product);
+    @Override
+    public Product save(Product product) {
+        return this.jpaProductRepository.save(product);
+    }
 
-    Product insert(Product product);
+    @Override
+    public Product insert(Product product) {
+        return this.jpaProductRepository.save(product);
+    }
 
-    List<Product> findAll();
+    @Override
+    public List<Product> findAll() {
+        return this.jpaProductRepository.findAll();
+    }
 
-    List<Product> findByTechnologiesNameIn(List<String> technologies);
+    @Override
+    public List<Product> findByTechnologiesNameIn(List<String> technologies) {
+        return this.jpaProductRepository.findByTechnologiesNameIn(technologies);
+    }
 
-    List<Product> findByMarketsNameIn(List<String> markets);
+    @Override
+    public List<Product> findByMarketsNameIn(List<String> markets) {
+        return null;
+    }
 }
