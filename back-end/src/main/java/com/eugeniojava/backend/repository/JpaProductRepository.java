@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface JpaProductRepository extends ProductRepository, JpaRepository<Product, Long> {
+public interface JpaProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p JOIN p.technologies t WHERE t.name IN " +
             "(:technologies) GROUP BY p")
