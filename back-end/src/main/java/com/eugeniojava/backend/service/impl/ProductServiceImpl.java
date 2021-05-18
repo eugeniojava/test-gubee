@@ -2,6 +2,7 @@ package com.eugeniojava.backend.service.impl;
 
 import com.eugeniojava.backend.model.Product;
 import com.eugeniojava.backend.repository.JpaProductRepository;
+import com.eugeniojava.backend.repository.ProductRepository;
 import com.eugeniojava.backend.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private final JpaProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Optional<Product> findById(long id) {

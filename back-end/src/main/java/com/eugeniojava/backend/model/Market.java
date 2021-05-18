@@ -1,20 +1,21 @@
 package com.eugeniojava.backend.model;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
-@Entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "market_table")
 public class Market {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "market_id")
+    @EqualsAndHashCode.Include
     private Long id;
 
     @Getter
